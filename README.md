@@ -231,7 +231,8 @@ Create an M3U (`example.m3u`) file for IPTV or Use existing URL in Jellyfin invo
 
 
 ## No-IP Dynamic DNS Setup on Ubuntu
-- for Set up DNS to map to your public ip each time you start the instance
+
+- To set up DNS that maps to your public ip each time you start the instance automatically
 
 ### Update and Install Required Packages
 ```
