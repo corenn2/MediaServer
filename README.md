@@ -202,9 +202,9 @@ Basiclly after you set it up you are all done with this step.
 
 Live channels Database : [iptv-org/iptv on GitHub](https://github.com/iptv-org/iptv)
 
-Create an M3U ('example.m3u') file for IPTV or Use existing URL in Jellyfin involves compiling a playlist with links to various streaming sources. 
+Create an M3U (`example.m3u`) file for IPTV or Use existing URL in Jellyfin involves compiling a playlist with links to various streaming sources. 
 
-- If you are using existing URL for Live Channels skip steps  ('1,2,3')
+- If you are using existing URL for Live Channels skip steps  (`1 , 2 , 3`)
 
 1. **Create a New Text File**: Start by creating a new text file using a text editor (like Notepad).
 
