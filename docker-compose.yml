@@ -1,0 +1,53 @@
+version: '3'
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    network_mode: "host"
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/ubuntu/Jellyfin_media:/home/ubuntu/Jellyfin_media
+      - ./config/jellyfin:/config
+    restart: unless-stopped
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./config/radarr:/config
+      - /home/ubuntu/Jellyfin_media/movies:/home/ubuntu/Jellyfin_media/movies
+      - /home/ubuntu/Jellyfin_media/downloads:/home/ubuntu/Jellyfin_media/downloads
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./config/sonarr:/config
+      - ~/Jellyfin_media/tvshows:/tv
+      - /home/ubuntu/Jellyfin_media/downloads:/home/ubuntu/Jellyfin_media/downloads
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  prowlarr:
+    image: linuxserver/prowlarr
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./config/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
