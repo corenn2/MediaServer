@@ -100,6 +100,33 @@ services:
     restart: unless-stopped
 ```
 
+**README for Docker Compose Setup**
+
+---
+
+
+This Docker Compose file sets up a complete media server stack including Jellyfin, Radarr, Sonarr, and Prowlarr. You can use the default configuration or customize it as needed.
+
+**Dynamic Variables to Consider:**
+
+1. **Volumes**: Adjust the volume paths (`/home/ubuntu/Jellyfin_media`) to match your local directories.
+2. **Environment Variables**: `PUID` and `PGID` should match the user ID and group ID of your host system for proper file permissions.
+3. **Ports**: Default ports are set (e.g., `7878` for Radarr). Change them if they conflict with other services on your system.
+
+**Default Setup**:
+
+You can use the file as-is if the default configuration suits your environment. Ensure the specified directories exist on your host.
+
+**Starting the Stack**:
+
+Run in the directory with your `docker-compose.yml` to start all services in detached mode.
+```
+docker-compose up -d
+``` 
+
+
+---
+
 
 ## Install and Configure qBittorrent-nox
 ```bash
