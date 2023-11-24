@@ -124,11 +124,13 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
-## Enable and Start qBittorrent-nox Service
+### Enable and Start qBittorrent-nox Service
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable --now qbittorrent-nox
 ```
+
+---
 
 
 
