@@ -100,10 +100,6 @@ services:
     restart: unless-stopped
 ```
 
-**README for Docker Compose Setup**
-
----
-
 
 This Docker Compose file sets up a complete media server stack including Jellyfin, Radarr, Sonarr, and Prowlarr. You can use the default configuration or customize it as needed.
 
