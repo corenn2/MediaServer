@@ -3,7 +3,7 @@
 # Set up Automatic Jellyfin Media Server on Ubuntu With few commands via Docker-Compose
 
 ## Ports
-1. **Jellyfin**: Since you're using `network_mode: "host"`, Jellyfin will use the host's network. By default, Jellyfin's web interface runs on port 8096.
+1. **Jellyfin**:  Port `8096` need to be exposed.
 
 2. **Radarr**: Port `7878` need to be exposed.
 
