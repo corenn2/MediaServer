@@ -124,7 +124,7 @@ docker-compose up -d
 ---
 
 
-## Install and Configure qBittorrent-nox
+## Install and Configure qBittorrent-nox (if you want to use docker at the button there is diffrent option)
 ```bash
 sudo apt install qbittorrent-nox
 qbittorrent-nox
