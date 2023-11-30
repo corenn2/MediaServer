@@ -405,4 +405,54 @@ sudo apt-get -y install fuse
 Remember to replace `gdrive:tvshows` and `gdrive:movies` with the correct paths to your Google Drive directories. The paths should match the structure in your Google Drive. Ensure all steps are correctly followed and that the `rclone.conf` file is correctly placed.
 
 
+---
+
+# Add a qBittorrent service to Docker Compose
+
+And we will also configure it to use a Google Drive volume via Rclone
+
+Here's how to integrate qBittorrent
+
+1. **Create Rclone Volume for qBittorrent Downloads:**
+   If you want qBittorrent to use a separate download directory on Google Drive, create a named volume specifically for it. 
+   ```bash
+   docker volume create gdrive_qbittorrent -d rclone -o remote="gdrive:qbittorrent" -o vfs-cache-mode=full -o allow_other=true
+   ```
+
+2. **Modify Docker Compose File:**
+   Add the qBittorrent service to your `docker-compose.yml` file and configure it to use the created Rclone volume. Ensure that you set the appropriate user and group IDs (`PUID` and `PGID`) for file permission consistency.
+
+
+   ```yaml
+   version: '3'
+   services:
+     # ... other services ...
+
+      qbittorrent:
+    image: linuxserver/qbittorrent
+    container_name: qbittorrent
+    environment:
+      - PUID=1000  
+      - PGID=1000  
+      - TZ=Europe/London  
+    volumes:
+      - ./config/qbittorrent:/config
+      - gdrive_qbittorrent:/downloads  
+    ports:
+      - 8080:8080  
+    restart: unless-stopped
+
+   volumes:
+     gdrive_tvshows:
+       external: true
+     gdrive_movies:
+       external: true
+     gdrive_qbittorrent:
+       external: true
+   ```
+
+   In this configuration, qBittorrent will store its configuration files in `./config/qbittorrent` on the host and use the `gdrive_qbittorrent` volume for downloads.
+
+3. **Deploy Your Updated Stack:**
+   Run `docker-compose up -d` to deploy your stack with qBittorrent and the updated volume configurations.
 
