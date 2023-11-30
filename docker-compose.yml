@@ -8,7 +8,8 @@ services:
       - PUID=1000
       - PGID=1000
     volumes:
-      - /home/ubuntu/Jellyfin_media:/home/ubuntu/Jellyfin_media
+      - gdrive_tvshows:/tvshows
+      - gdrive_movies:/movies
       - ./config/jellyfin:/config
     restart: unless-stopped
 
@@ -20,7 +21,7 @@ services:
       - PGID=1000
     volumes:
       - ./config/radarr:/config
-      - /home/ubuntu/Jellyfin_media/movies:/home/ubuntu/Jellyfin_media/movies
+      - gdrive_movies:/movies
       - /home/ubuntu/Jellyfin_media/downloads:/home/ubuntu/Jellyfin_media/downloads
     ports:
       - 7878:7878
@@ -34,7 +35,7 @@ services:
       - PGID=1000
     volumes:
       - ./config/sonarr:/config
-      - ~/Jellyfin_media/tvshows:/tv
+      - gdrive_tvshows:/tvshows
       - /home/ubuntu/Jellyfin_media/downloads:/home/ubuntu/Jellyfin_media/downloads
     ports:
       - 8989:8989
@@ -51,3 +52,11 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
+
+
+
+volumes:
+  gdrive_tvshows:
+    external: true
+  gdrive_movies:
+    external: true

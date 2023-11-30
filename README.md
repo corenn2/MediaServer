@@ -329,7 +329,80 @@ Now that the client is installed and configured, you just need to launch it.  Si
      ```
 
 
+---
 
+
+# Mount Google drive as storage 
+
+To modify your Docker Compose file to use the Rclone Docker Volume Plugin with Google Drive, you'll need to create named volumes that interface with Google Drive via Rclone. This setup will allow your services like Jellyfin, Radarr, Sonarr, and Prowlarr to use data stored on Google Drive.
+
+[install rclone and configure it](https://ostechnix.com/mount-google-drive-using-rclone-in-linux/)
+
+[create api for google drive](https://rclone.org/drive/#making-your-own-client-id)
+
+#### Note Remember to first mount rclone on a specfic folder before moving to next steps
+
+1. **Install FUSE:** - as Rclone depends on FUSE for mounting.
+
+```
+sudo apt-get -y install fuse
+```
+
+
+2. **Create Plugin Directories:** Create the necessary directories for the Rclone Docker plugin:
+   ```bash
+   sudo mkdir -p /var/lib/docker-plugins/rclone/config
+   sudo mkdir -p /var/lib/docker-plugins/rclone/cache
+   ```
+
+3. **Install Rclone Plugin:** Install the Rclone Docker plugin:
+   ```bash
+   docker plugin install rclone/docker-volume-rclone:amd64 --alias rclone --grant-all-permissions
+   ```
+
+4. **Configure Google Drive in Rclone:**
+   - Run `rclone config` on a machine with a GUI and web browser.
+   - Set up a Google Drive remote and obtain the `rclone.conf` file.
+   - Transfer this `rclone.conf` to your Docker host and place it in `/var/lib/docker-plugins/rclone/config`.
+
+5. **Create Rclone Volumes:**
+   - Use `docker volume create` to create volumes for your Google Drive paths. For example, for TV shows and movies:
+     ```bash
+     docker volume create gdrive_tvshows -d rclone -o remote="gdrive:tvshows" -o vfs-cache-mode=full -o allow_other=true
+     docker volume create gdrive_movies -d rclone -o remote="gdrive:movies" -o vfs-cache-mode=full -o allow_other=true
+     ```
+
+6. **Modify Docker Compose File:** Replace the direct mount points in your Docker Compose file with the named Rclone volumes. Here's an example for the `tvshows` and `movies` directories:
+
+   ```yaml
+   version: '3'
+   services:
+     jellyfin:
+       image: jellyfin/jellyfin
+       container_name: jellyfin
+       network_mode: "host"
+       environment:
+         - PUID=1000
+         - PGID=1000
+       volumes:
+         - gdrive_tvshows:/tvshows
+         - gdrive_movies:/movies
+         - ./config/jellyfin:/config
+       restart: unless-stopped
+
+     # Similar changes for radarr, sonarr, prowlarr services
+     # Use the gdrive_tvshows and gdrive_movies volumes as needed
+
+   volumes:
+     gdrive_tvshows:
+       external: true
+     gdrive_movies:
+       external: true
+   ```
+
+7. **Deploy Your Stack:** Use `docker-compose up -d` to deploy your stack with the new volume configuration.
+
+Remember to replace `gdrive:tvshows` and `gdrive:movies` with the correct paths to your Google Drive directories. The paths should match the structure in your Google Drive. Ensure all steps are correctly followed and that the `rclone.conf` file is correctly placed.
 
 
 
